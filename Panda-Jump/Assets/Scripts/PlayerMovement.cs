@@ -9,25 +9,55 @@ public class PlayerMovement : MonoBehaviour
     private Camera mainCam;
     private Vector2 touchPos;
     private bool moveState;
+    private Animator anim;
+    private bool lookingRight;
 
     [SerializeField] private float speed;
     [SerializeField] private float jumpSpeed;
     private Rigidbody2D rb;
+    private SpriteRenderer spriteRenderer;
 
     private int score;
 
     void Awake()
     {
+        lookingRight= true;
         mainCam = Camera.main;
         touchPos = Vector2.zero;
         moveState = false;
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        spriteRenderer= GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         Input();
         Move();
+        AnimatonController();
+        FlipController();
+    }
+    private void AnimatonController()
+    {
+        if(rb.velocity.y > 0)
+        {
+            anim.SetBool("jumping", true);
+        }
+        else
+        {
+            anim.SetBool("jumping", false);
+        }
+    }
+    private void FlipController()
+    {
+        if(touchPos.x > transform.position.x)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else
+        {
+            spriteRenderer.flipX = true;
+        }
     }
     private void Input()
     {
@@ -89,6 +119,6 @@ public class PlayerMovement : MonoBehaviour
         if (rb.velocity.y < 0)
             return false;
 
-        return true;
+        return false;
     }
 }
