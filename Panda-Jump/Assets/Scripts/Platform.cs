@@ -40,7 +40,6 @@ public class Platform : MonoBehaviour
         ps = platformSpawner;
         this.player = player;
     }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject otherColl = collision.gameObject;
