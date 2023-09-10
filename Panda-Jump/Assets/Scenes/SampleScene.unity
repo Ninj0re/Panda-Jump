@@ -186,7 +186,7 @@ MonoBehaviour:
   spawnObject: {fileID: 8086794959738313978, guid: c2f2392a57a1a604d8518b3fb7e1d3e3, type: 3}
   player: {fileID: 1759467047}
   spawnObjectParent: {fileID: 1543376116}
-  distance: 5.2
+  distance: 15.6
 --- !u!4 &464069016
 Transform:
   m_ObjectHideFlags: 0
