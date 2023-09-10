@@ -10,18 +10,17 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 touchPos;
     private bool moveState;
     private Animator anim;
-    private bool lookingRight;
 
     [SerializeField] private float speed;
     [SerializeField] private float jumpSpeed;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
 
-    private int score;
+    [SerializeField] private int score;
+    [SerializeField] private int coin;
 
     void Awake()
     {
-        lookingRight= true;
         mainCam = Camera.main;
         touchPos = Vector2.zero;
         moveState = false;
@@ -112,6 +111,10 @@ public class PlayerMovement : MonoBehaviour
     public void AddScore(int point)
     {
         score += point;
+    }
+    public void AddCoin(int coin)
+    {
+        this.coin += coin;
     }
 
     public bool FlyState()
