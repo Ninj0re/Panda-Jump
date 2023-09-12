@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CoinSpawner : Spawner
 {
+    private System.Random rng = new System.Random();
+
     void Start()
     {
         Spawn(-7 + distance);
@@ -16,6 +18,7 @@ public class CoinSpawner : Spawner
 
         spawnedCoin.GetComponent<Coin>().AsignComponents(GetComponent<CoinSpawner>());
         Coin.spawnHeight = spawnPoint.y + distance;
+        
         return spawnedCoin;
     }
 }
