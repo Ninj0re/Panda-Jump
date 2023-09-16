@@ -11,15 +11,47 @@ public class Platform : MonoBehaviour
     private GameObject player;
     private Animator anim;
 
-    private void Start()
+    private Rigidbody2D rb;
+    private bool goRight;
+    [SerializeField] private float speed;
+
+    void Start()
     {
-     anim = GetComponent<Animator>();   
+        goRight= true;
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
     }
     void Update()
     {
         State();
 
         Destroy();
+
+        Move();
+    }
+
+    private void Move()
+    {
+        if(transform.position.x > 3.8 && goRight)
+        {
+            goRight = !goRight;
+        }
+        if (transform.position.x < -3.8 && !goRight)
+        {
+            goRight = !goRight;
+        }
+        if (goRight)
+        {
+            rb.velocity = new Vector2(1, 0) * speed;
+            Debug.Log("right");
+        }
+        if (!goRight)
+        {
+            rb.velocity = new Vector2(-1, 0) * speed;
+            Debug.Log("left");
+        }
+
+
     }
     private void State()
     {
