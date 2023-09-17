@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int score;
     [SerializeField] private int coin;
 
+    [SerializeField] private TMP_Text coinText;
+    [SerializeField] private TMP_Text scoreText;
     void Awake()
     {
         mainCam = Camera.main;
@@ -35,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         Move();
         AnimatonController();
         FlipController();
+        UIController();
     }
     private void AnimatonController()
     {
@@ -57,6 +61,11 @@ public class PlayerMovement : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
+    }
+    private void UIController()
+    {
+        coinText.text = "" + coin; 
+        scoreText.text = ""+ score;
     }
     private void Input()
     {
