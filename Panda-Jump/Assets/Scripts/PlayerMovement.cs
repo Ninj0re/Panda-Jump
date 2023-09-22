@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using TMPro;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private TMP_Text coinText;
     [SerializeField] private TMP_Text scoreText;
+
+    [SerializeField] private GameObject[] backgrounds;
     void Awake()
     {
         mainCam = Camera.main;
@@ -81,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             moveState = false;
-            touchPos = Vector2.zero;   
+            touchPos = Vector3.zero;   
         }
             
     }
@@ -90,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (moveState)
         {
-            transform.Translate(new Vector2(touchPos.x - transform.position.x, 0) * speed * Time.deltaTime);
+            transform.Translate(new Vector3(touchPos.x - transform.position.x, 0) * speed * Time.deltaTime, 0);
         }
     }
 
@@ -119,7 +122,17 @@ public class PlayerMovement : MonoBehaviour
 
     public void AddScore(int point)
     {
+        if (!FlyState())
+            return;
         score += point;
+        if(point != 0)
+        {
+            for(var i=0; i<backgrounds.Length; i++)
+            {
+                backgrounds[i].GetComponent<BackgroundParent>().GoDown();
+            }
+        }
+            
     }
     public void AddCoin(int coin)
     {
@@ -129,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
     public bool FlyState()
     {
         if (rb.velocity.y < 0)
-            return false;
+            return true;
 
         return false;
     }

@@ -23,7 +23,7 @@ public class Platform : MonoBehaviour
     }
     private void State()
     {
-        if (!player.GetComponent<PlayerMovement>().FlyState())
+        if (player.GetComponent<PlayerMovement>().FlyState())
         {
             GetComponent<Collider2D>().enabled = true;
         }
