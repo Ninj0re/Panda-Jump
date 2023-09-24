@@ -9,12 +9,7 @@ public class Platform : MonoBehaviour
 
     private PlatformSpawner ps;
     private GameObject player;
-    private Animator anim;
 
-    private void Start()
-    {
-     anim = GetComponent<Animator>();   
-    }
     void Update()
     {
         State();
@@ -51,7 +46,6 @@ public class Platform : MonoBehaviour
 
         if (otherColl.CompareTag("Player"))
         {
-            anim.SetBool("collided", true);
             otherColl.GetComponent<PlayerMovement>().AddScore(point);
             if(point != 0)
             {

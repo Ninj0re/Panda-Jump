@@ -7,7 +7,7 @@ public class PlatformSpawner : Spawner
 
     void Start()
     {
-        Spawn(-5 + distance);
+        Spawn(new Vector2(-3.2f, -5 + distance));
         Spawn(-5 + distance * 2);
         Spawn(-5 + distance * 3);
         Spawn(-5 + distance * 4);

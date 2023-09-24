@@ -25,6 +25,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private TMP_Text scoreText;
 
     [SerializeField] private GameObject[] backgrounds;
+
+    float timer = 5;
+    float countDown;
+    bool started;
     void Awake()
     {
         mainCam = Camera.main;
@@ -42,6 +46,20 @@ public class PlayerMovement : MonoBehaviour
         AnimatonController();
         FlipController();
         UIController();
+
+        countDown += Time.deltaTime;
+        if(timer < countDown && !started)
+        {
+            StartGame();
+            started= true;
+        }
+    }
+
+    private void StartGame()
+    {
+        anim.SetBool("gameStarted", true);
+        jumpSpeed = 25;
+        Jump();
     }
     private void AnimatonController()
     {
