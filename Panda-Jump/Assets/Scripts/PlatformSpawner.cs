@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlatformSpawner : Spawner
 {
-
+    [SerializeField] private GameObject lava;
     void Start()
     {
         Spawn(new Vector2(-3.2f, -5 + distance));
@@ -18,7 +18,7 @@ public class PlatformSpawner : Spawner
     {
         GameObject spawnedPlatform = base.Spawn(spawnPoint);
 
-        spawnedPlatform.GetComponent<Platform>().AsignComponents(GetComponent<PlatformSpawner>(), player);
+        spawnedPlatform.GetComponent<Platform>().AsignComponents(GetComponent<PlatformSpawner>(), player, lava);
 
         return spawnedPlatform;
     }

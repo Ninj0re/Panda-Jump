@@ -9,6 +9,7 @@ public class Platform : MonoBehaviour
 
     private PlatformSpawner ps;
     private GameObject player;
+    private GameObject lava;
 
     void Update()
     {
@@ -33,12 +34,14 @@ public class Platform : MonoBehaviour
         if (player.transform.GetChild(player.transform.childCount - 1).transform.position.y > transform.position.y)
         {
             Destroy(gameObject);
+            lava.GetComponent<Lava>().LavaPos(transform.position);
         }
     }
-    public void AsignComponents(PlatformSpawner platformSpawner, GameObject player)
+    public void AsignComponents(PlatformSpawner platformSpawner, GameObject player, GameObject lava)
     {
         ps = platformSpawner;
         this.player = player;
+        this.lava = lava;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

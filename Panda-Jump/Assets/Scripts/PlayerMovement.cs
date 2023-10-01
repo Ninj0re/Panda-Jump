@@ -23,12 +23,12 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private TMP_Text coinText;
     [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private TMP_Text startText;
 
     [SerializeField] private GameObject[] backgrounds;
 
-    float timer = 5;
-    float countDown;
     bool started;
+    bool startChecker;
     void Awake()
     {
         mainCam = Camera.main;
@@ -37,29 +37,53 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         spriteRenderer= GetComponent<SpriteRenderer>();
+        scoreText.enabled = false;
     }
 
     void Update()
     {
+        if (!started)
+        {
+            CheckStartInput();
+            return;
+        }
+            
+        else
+        {
+            if(!startChecker)
+            {
+                StartGame();
+                startChecker = true;
+            }
+        }
         Input();
         Move();
         AnimatonController();
         FlipController();
         UIController();
+    }
 
-        countDown += Time.deltaTime;
-        if(timer < countDown && !started)
-        {
-            StartGame();
+    private void CheckStartInput()
+    {
+        if (Touch.fingers[0].isActive)
             started= true;
-        }
     }
 
     private void StartGame()
     {
+        scoreText.enabled = true;
+        startText.enabled = false;
         anim.SetBool("gameStarted", true);
         jumpSpeed = 25;
         Jump();
+    }
+    private void IncreaseSpeed()
+    {
+        if (score > 120)
+            return;
+
+        rb.gravityScale += 0.075f;
+        jumpSpeed += 0.15f;
     }
     private void AnimatonController()
     {
@@ -148,9 +172,14 @@ public class PlayerMovement : MonoBehaviour
             for(var i=0; i<backgrounds.Length; i++)
             {
                 backgrounds[i].GetComponent<BackgroundParent>().GoDown();
+                IncreaseSpeed();
             }
         }
             
+    }
+    public int GetScore()
+    {
+        return score;
     }
     public void AddCoin(int coin)
     {
