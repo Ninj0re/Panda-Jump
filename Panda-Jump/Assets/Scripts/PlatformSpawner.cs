@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlatformSpawner : Spawner
 {
-    [SerializeField] private GameObject lava;
+    [SerializeField] private GameObject[] lava;
     void Start()
     {
         Spawn(new Vector2(-3.2f, -5 + distance));

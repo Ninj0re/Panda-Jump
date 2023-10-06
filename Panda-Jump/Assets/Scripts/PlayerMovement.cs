@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private TMP_Text coinText;
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text startText;
+    [SerializeField] private ButtonController buttonController;
 
     [SerializeField] private GameObject[] backgrounds;
 
@@ -56,11 +57,15 @@ public class PlayerMovement : MonoBehaviour
                 startChecker = true;
             }
         }
-        Input();
-        Move();
-        AnimatonController();
-        FlipController();
-        UIController();
+        if (!buttonController.Paused())
+        {
+            Input();
+            Move();
+            AnimatonController();
+            FlipController();
+            UIController();
+        }
+        
     }
 
     private void CheckStartInput()
@@ -76,14 +81,16 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("gameStarted", true);
         jumpSpeed = 25;
         Jump();
+        buttonController.ButtonActiveness(false);
     }
     private void IncreaseSpeed()
     {
         if (score > 120)
             return;
 
-        rb.gravityScale += 0.075f;
-        jumpSpeed += 0.15f;
+        Time.timeScale += 0.005f;
+        //rb.gravityScale += 0.075f;
+        //jumpSpeed += 0.15f;
     }
     private void AnimatonController()
     {

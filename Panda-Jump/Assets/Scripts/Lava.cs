@@ -24,6 +24,7 @@ public class Lava : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            Time.timeScale = 1;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
