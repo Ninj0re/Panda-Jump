@@ -20,9 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private int score;
 
-    [SerializeField] private TMP_Text coinText;
-    [SerializeField] private TMP_Text scoreText;
-    [SerializeField] private TMP_Text startText;
+    [SerializeField] private UIManager managerUI;
     [SerializeField] private ButtonController buttonController;
 
     [SerializeField] private GameObject[] backgrounds;
@@ -37,7 +35,6 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         spriteRenderer= GetComponent<SpriteRenderer>();
-        scoreText.enabled = false;
     }
 
     void Update()
@@ -56,15 +53,15 @@ public class PlayerMovement : MonoBehaviour
                 startChecker = true;
             }
         }
-        if (!buttonController.Paused())
-        {
-            Input();
-            Move();
-            AnimatonController();
-            FlipController();
-            UIController();
-        }
-        
+        if(buttonController.Paused())
+            return;
+
+        Input();
+        Move();
+        AnimatonController();
+        FlipController();
+
+
     }
 
     private void CheckStartInput()
@@ -75,12 +72,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void StartGame()
     {
-        scoreText.enabled = true;
-        startText.enabled = false;
+        managerUI.StartGame();
         anim.SetBool("gameStarted", true);
         jumpSpeed = 25;
         Jump();
-        buttonController.ButtonActiveness(false);
     }
     private void IncreaseSpeed()
     {
@@ -112,11 +107,6 @@ public class PlayerMovement : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
-    }
-    private void UIController()
-    {
-        coinText.text = "" + PlayerPrefs.GetInt("coin", 0); 
-        scoreText.text = ""+ score;
     }
     private void Input()
     {

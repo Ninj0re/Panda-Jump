@@ -24,6 +24,10 @@ public class ButtonController : MonoBehaviour
             soundActiveness = false;
         else
             soundActiveness = true;
+
+        soundButton.GetComponent<Animator>().SetBool("active", soundActiveness);
+        musicButton.GetComponent<Animator>().SetBool("active", musicActiveness);
+
     }
     public void PauseButton()
     {
