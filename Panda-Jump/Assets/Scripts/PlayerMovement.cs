@@ -19,7 +19,6 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     [SerializeField] private int score;
-    [SerializeField] private int coin;
 
     [SerializeField] private TMP_Text coinText;
     [SerializeField] private TMP_Text scoreText;
@@ -116,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void UIController()
     {
-        coinText.text = "" + coin; 
+        coinText.text = "" + PlayerPrefs.GetInt("coin", 0); 
         scoreText.text = ""+ score;
     }
     private void Input()
@@ -190,7 +189,11 @@ public class PlayerMovement : MonoBehaviour
     }
     public void AddCoin(int coin)
     {
-        this.coin += coin;
+        PlayerPrefs.SetInt("coin", PlayerPrefs.GetInt("coin", 0) + coin);
+    }
+    public int GetCoin()
+    {
+        return PlayerPrefs.GetInt("coin", 0);
     }
 
     public bool FlyState()

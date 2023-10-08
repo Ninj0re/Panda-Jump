@@ -13,6 +13,18 @@ public class ButtonController : MonoBehaviour
     [SerializeField] private GameObject soundButton;
     private bool musicActiveness = true;
     private bool soundActiveness = true;
+
+    void Start()
+    {
+        if (PlayerPrefs.GetInt("musicActiveness", 1) == 0)
+            musicActiveness = false;
+        else
+            musicActiveness = true;
+        if (PlayerPrefs.GetInt("soundActiveness", 1) == 0)
+            soundActiveness = false;
+        else
+            soundActiveness = true;
+    }
     public void PauseButton()
     {
         if(paused)
@@ -55,12 +67,24 @@ public class ButtonController : MonoBehaviour
     public void MusicButton()
     {
         musicActiveness = !musicActiveness;
+
+        if (musicActiveness)
+            PlayerPrefs.SetInt("musicActiveness", 1);
+        else
+            PlayerPrefs.SetInt("musicActiveness", 0);
+
         musicButton.GetComponent<Animator>().SetBool("active", musicActiveness);
     }
 
     public void SoundButton()
     {
         soundActiveness = !soundActiveness;
+
+        if (soundActiveness)
+            PlayerPrefs.SetInt("soundActiveness", 1);
+        else
+            PlayerPrefs.SetInt("soundActiveness", 0);
+
         soundButton.GetComponent<Animator>().SetBool("active", soundActiveness);
     }
 
