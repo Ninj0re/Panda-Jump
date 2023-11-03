@@ -11,11 +11,9 @@ public class ButtonController : MonoBehaviour
     private float timeScale = 1;
 
     [SerializeField] private GameObject musicButton;
-    [SerializeField] private GameObject soundButton;
     [SerializeField] private AudioSource backgroundMusic;
     [SerializeField] private RewardedAdsButton rewardAds;
     private bool musicActiveness = true;
-    private bool soundActiveness = true;
 
     void Start()
     {
@@ -23,12 +21,7 @@ public class ButtonController : MonoBehaviour
             musicActiveness = false;
         else
             musicActiveness = true;
-        if (PlayerPrefs.GetInt("soundActiveness", 1) == 0)
-            soundActiveness = false;
-        else
-            soundActiveness = true;
 
-        soundButton.GetComponent<Animator>().SetBool("active", soundActiveness);
         musicButton.GetComponent<Animator>().SetBool("active", musicActiveness);
 
         SetBackgroundMusic();
@@ -79,11 +72,9 @@ public class ButtonController : MonoBehaviour
     public void ButtonActiveness(bool activeness)
     {
         musicButton.SetActive(activeness);
-        soundButton.SetActive(activeness);
         if(activeness)
         {
             musicButton.GetComponent<Animator>().SetBool("active", musicActiveness);
-            soundButton.GetComponent<Animator>().SetBool("active", soundActiveness);
         }
     }
 
@@ -105,25 +96,9 @@ public class ButtonController : MonoBehaviour
         SetBackgroundMusic();
     }
 
-    public void SoundButton()
-    {
-        soundActiveness = !soundActiveness;
-
-        if (soundActiveness)
-            PlayerPrefs.SetInt("soundActiveness", 1);
-        else
-            PlayerPrefs.SetInt("soundActiveness", 0);
-
-        soundButton.GetComponent<Animator>().SetBool("active", soundActiveness);
-    }
 
     private void SetBackgroundMusic()
     {
         backgroundMusic.mute = !musicActiveness;
-    }
-
-    public bool GetSoundActiveness()
-    {
-        return soundActiveness;
     }
 }

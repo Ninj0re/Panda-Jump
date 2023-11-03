@@ -6,7 +6,6 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private TMP_Text coinText;
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text startText;
     [SerializeField] private ButtonController buttonController;
@@ -31,7 +30,6 @@ public class UIManager : MonoBehaviour
 
     private void PlayerData()
     {
-        coinText.text = "" + PlayerPrefs.GetInt("coin", 0);
         scoreText.text = "" + pm.GetScore();
     }
 }

@@ -8,15 +8,13 @@ public class EndGameManager : MonoBehaviour
     [SerializeField] private ButtonController buttonController;
     [SerializeField] private PlayerMovement player;
     [SerializeField] private GameObject[] lava;
-    [SerializeField] private GameObject reviveButton;
-    [SerializeField] private GameObject restartButton;
+    [SerializeField] private GameObject endGameButtons;
     private int score;
 
     public static bool isGameEnded;
     void Start()
     {
-        reviveButton.SetActive(false);
-        restartButton.SetActive(false);
+        UnShowUI();
     }
     public void EndGameScreen(int score)
     {
@@ -33,10 +31,26 @@ public class EndGameManager : MonoBehaviour
         }
         Debug.Log("Highscore is: "+ PlayerPrefs.GetInt("highscore", 0) +"!");
     }
+
+    private void UIManager(bool activeness, GameObject o)
+    {
+        Transform buttons = o.transform;
+        for (int i = 0; i < buttons.childCount; i++)
+        {
+            buttons.GetChild(i).gameObject.SetActive(activeness);
+            if (buttons.transform.childCount != 0)
+            {
+                UIManager(activeness, buttons.GetChild(i).gameObject);
+            }
+        }
+    }
     public void ShowUI()
     {
-        reviveButton.SetActive(true);
-        restartButton.SetActive(true);
+        UIManager(true, endGameButtons);
+    }
+    public void UnShowUI()
+    {
+        UIManager(false, endGameButtons);
     }
 
     public void Revive()
@@ -48,8 +62,7 @@ public class EndGameManager : MonoBehaviour
         buttonController.Resume();
         player.Revive();
 
-        reviveButton.SetActive(false);
-        restartButton.SetActive(false);
+        UnShowUI();
 
         isGameEnded = false;
     }

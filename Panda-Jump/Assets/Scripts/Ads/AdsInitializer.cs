@@ -3,6 +3,7 @@ using UnityEngine.Advertisements;
 
 public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 {
+    [SerializeField] RewardedAdsButton rewardedAds;
     [SerializeField] string _androidGameId;
     [SerializeField] string _iOSGameId;
     [SerializeField] bool _testMode = true;
@@ -34,6 +35,7 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 
     public void OnInitializationComplete()
     {
+        rewardedAds.LoadAd();
         Debug.Log("Unity Ads initialization complete.");
     }
 
