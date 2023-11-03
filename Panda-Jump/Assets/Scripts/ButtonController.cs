@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Advertisements;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -11,6 +12,8 @@ public class ButtonController : MonoBehaviour
 
     [SerializeField] private GameObject musicButton;
     [SerializeField] private GameObject soundButton;
+    [SerializeField] private AudioSource backgroundMusic;
+    [SerializeField] private RewardedAdsButton rewardAds;
     private bool musicActiveness = true;
     private bool soundActiveness = true;
 
@@ -28,9 +31,13 @@ public class ButtonController : MonoBehaviour
         soundButton.GetComponent<Animator>().SetBool("active", soundActiveness);
         musicButton.GetComponent<Animator>().SetBool("active", musicActiveness);
 
+        SetBackgroundMusic();
+
     }
     public void PauseButton()
     {
+        if (EndGameManager.isGameEnded)
+            return;
         if(paused)
         {
             Resume();
@@ -39,18 +46,35 @@ public class ButtonController : MonoBehaviour
         {
             Pause();
         }
+    }
+    public void Resume()
+    {
+        if (!paused)
+            return;
+
         paused = !paused;
-    }
-    private void Resume()
-    {
-        Time.timeScale = timeScale;
         ButtonActiveness(false);
+
+        if (EndGameManager.isGameEnded && Advertisement.isInitialized)
+        {
+            rewardAds.ShowAd(timeScale);
+        }      
+        else
+        {   
+            Time.timeScale = timeScale;
+        }
+
+        
     }
-    private void Pause()
+    public void Pause()
     {
-        ButtonActiveness(true);
+        if (paused)
+            return;
+
+        paused = !paused;
         timeScale = Time.timeScale;
         Time.timeScale = 0;
+        ButtonActiveness(true);
     }
     public void ButtonActiveness(bool activeness)
     {
@@ -63,7 +87,7 @@ public class ButtonController : MonoBehaviour
         }
     }
 
-    public bool Paused()
+    public bool IsPaused()
     {
         return paused;
     }
@@ -78,6 +102,7 @@ public class ButtonController : MonoBehaviour
             PlayerPrefs.SetInt("musicActiveness", 0);
 
         musicButton.GetComponent<Animator>().SetBool("active", musicActiveness);
+        SetBackgroundMusic();
     }
 
     public void SoundButton()
@@ -92,4 +117,13 @@ public class ButtonController : MonoBehaviour
         soundButton.GetComponent<Animator>().SetBool("active", soundActiveness);
     }
 
+    private void SetBackgroundMusic()
+    {
+        backgroundMusic.mute = !musicActiveness;
+    }
+
+    public bool GetSoundActiveness()
+    {
+        return soundActiveness;
+    }
 }

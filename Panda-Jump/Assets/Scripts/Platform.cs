@@ -53,7 +53,7 @@ public class Platform : MonoBehaviour
 
         if (otherColl.CompareTag("Player"))
         {
-            otherColl.GetComponent<PlayerMovement>().AddScore(point);
+            otherColl.GetComponent<PlayerMovement>().AddScore(point, gameObject);
             if(point != 0)
             {
                 float childHeight = transform.parent.GetChild(transform.parent.childCount - 1).transform.position.y;

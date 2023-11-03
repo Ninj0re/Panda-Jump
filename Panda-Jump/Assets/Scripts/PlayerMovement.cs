@@ -25,8 +25,12 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private GameObject[] backgrounds;
 
+    [SerializeField] private SoundEffect coinSound;
+
     bool started;
     bool startChecker;
+
+    [SerializeField] private GameObject lastPlatform;
     void Awake()
     {
         mainCam = Camera.main;
@@ -35,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         spriteRenderer= GetComponent<SpriteRenderer>();
+
     }
 
     void Update()
@@ -53,15 +58,13 @@ public class PlayerMovement : MonoBehaviour
                 startChecker = true;
             }
         }
-        if(buttonController.Paused())
+        if(buttonController.IsPaused() || EndGameManager.isGameEnded)
             return;
 
         Input();
         Move();
         AnimatonController();
         FlipController();
-
-
     }
 
     private void CheckStartInput()
@@ -149,16 +152,7 @@ public class PlayerMovement : MonoBehaviour
         EnhancedTouchSupport.Disable();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.layer == 6)
-        {
-            if(rb.velocity.y <= 0)
-                Jump();
-        }
-    }
-
-    public void AddScore(int point)
+    public void AddScore(int point, GameObject platform)
     {
         if (!FlyState())
             return;
@@ -171,7 +165,8 @@ public class PlayerMovement : MonoBehaviour
                 IncreaseSpeed();
             }
         }
-            
+
+        lastPlatform = platform;   
     }
     public int GetScore()
     {
@@ -186,11 +181,32 @@ public class PlayerMovement : MonoBehaviour
         return PlayerPrefs.GetInt("coin", 0);
     }
 
+    public void Revive()
+    {
+        transform.position = new Vector2(lastPlatform.transform.position.x, lastPlatform.transform.position.y + 1.25f);
+    }
+
     public bool FlyState()
     {
         if (rb.velocity.y < 0)
             return true;
 
         return false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 6)
+        {
+            if (rb.velocity.y <= 0)
+                Jump();
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Coin>() != null)
+        {
+            coinSound.Play();
+        }
     }
 }

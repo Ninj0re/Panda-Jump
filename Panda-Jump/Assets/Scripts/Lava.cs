@@ -7,6 +7,7 @@ public class Lava : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private PlayerMovement player;
+    [SerializeField] private EndGameManager endManager;
 
     void Update()
     {
@@ -24,9 +25,7 @@ public class Lava : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Time.timeScale = 1;
-            EndGameManager.SetHighScore(player.GetScore());
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            endManager.EndGameScreen(player.GetScore());
         }
 
     }
